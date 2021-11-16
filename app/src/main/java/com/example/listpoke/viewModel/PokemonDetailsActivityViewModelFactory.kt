@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.listpoke.repository.PokemonRepository
 
-abstract class PokemonDetailsActivityViewModelFactory(
+ class PokemonDetailsActivityViewModelFactory(
     private val repository: PokemonRepository
 ) :
     ViewModelProvider.Factory {

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.listpoke.R
 import com.example.listpoke.database.AppDatabase
 import com.example.listpoke.database.PokemonEntity
+import com.example.listpoke.databinding.ActivityPokemonDetailsBinding
 import com.example.listpoke.repository.PokemonRepository
 import com.example.listpoke.util.POKEMON_CHAVE
 import com.example.listpoke.util.changeTypeColor
@@ -18,13 +19,15 @@ import com.squareup.picasso.Picasso
 
 class PokemonDetailsActivity : AppCompatActivity() {
 
+   private lateinit var binding: ActivityPokemonDetailsBinding
+
     private val pokemonId by lazy {
         intent.extras?.getInt(POKEMON_CHAVE, 0)
     }
 
     private val viewModel by lazy {
         val repository = PokemonRepository(AppDatabase.getInstance(this).pokemonDAO)
-        val factory = PokemonDetailsActivityViewModelFactory (repository:PokemonRepository)
+        val factory = PokemonDetailsActivityViewModelFactory(repository)
         ViewModelProvider(this, factory)
             .get(PokemonDetailsActivityViewModel::class.java)
     }
@@ -32,19 +35,22 @@ class PokemonDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pokemon_details)
+        binding = ActivityPokemonDetailsBinding.inflate(layoutInflater)
         config()
+
     }
 
     private fun config() {
         pokemonId?.let { fetchData(it) }
     }
 
+
     private fun navigationClickListener() {
-        mab_pokemonDetails.setNavigationOnClickListener { finish() }
+        binding.mabPokemonDetails.setNavigationOnClickListener { finish() }
     }
 
     private fun menuClickListener(pokemon: PokemonEntity) {
-        mab_pokemonDetails.setOnMenuItemClickListener {
+        binding.mabPokemonDetails.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.favorite_empty_menu -> {
                     viewModel.changeFavorite(pokemon)
@@ -79,19 +85,19 @@ class PokemonDetailsActivity : AppCompatActivity() {
 
             menuClickListener(pokemonModel)
             navigationClickListener()
-            mab_pokemonDetails.title = pokemonModel.name.uppercase()
+             binding.mabPokemonDetails.title = pokemonModel.name.uppercase()
 
             changeFavoriteIcon(pokemonModel)
-            Picasso.get().load(pokemonModel.image).into(iv_pokemon)
-            changeBackgroundColor(tv_typeInfo1, pokemonModel.type1)
+            Picasso.get().load(pokemonModel.image).into(binding.ivPokemon)
+            changeBackgroundColor(binding.tvTypeInfo1, pokemonModel.type1)
             configVisibilityOfTypes(pokemonModel)
             setHeightAndWeightView(pokemonModel)
         }
     }
 
     private fun changeFavoriteIcon(pokemonModel: PokemonEntity) {
-        val emptyMenuPokemon = mab_pokemonDetails.menu.findItem(R.id.favorite_empty_menu)
-        val fullMenuPokemon = mab_pokemonDetails.menu.findItem(R.id.favorite_full_menu)
+        val emptyMenuPokemon = binding.mabPokemonDetails.menu.findItem(R.id.favorite_empty_menu)
+        val fullMenuPokemon = binding.mabPokemonDetails.menu.findItem(R.id.favorite_full_menu)
         if (pokemonModel.isFavorite) {
             emptyMenuPokemon.isVisible = false
             fullMenuPokemon.isVisible = true
@@ -104,16 +110,16 @@ class PokemonDetailsActivity : AppCompatActivity() {
     private fun setHeightAndWeightView(pokemonModel: PokemonEntity) {
         val heightValue = pokemonModel.height.toFloat().let { it1 -> convertValues(it1) }
         val weightValue = pokemonModel.weight.toFloat().let { it1 -> convertValues(it1) }
-        "$heightValue m".also { tv_heightInfo.text = it }
-        "$weightValue Kg".also { tv_weightInfo.text = it }
+        "$heightValue m".also { binding.tvHeightInfo.text = it }
+        "$weightValue Kg".also { binding.tvHeightInfo.text = it }
     }
 
     private fun configVisibilityOfTypes(pokemonModel: PokemonEntity) {
         if (pokemonModel.type2 != null) {
-            tv_typeInfo2.visibility = View.VISIBLE
-            changeBackgroundColor(tv_typeInfo2, pokemonModel.type2)
+            binding.tvTypeInfo2.visibility = View.VISIBLE
+            changeBackgroundColor(binding.tvTypeInfo2, pokemonModel.type2)
         } else {
-            tv_typeInfo2.visibility = View.GONE
+            binding.tvTypeInfo2.visibility = View.GONE
         }
     }
 

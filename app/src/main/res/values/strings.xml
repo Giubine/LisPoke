@@ -29,4 +29,7 @@
     <string name="numero_pokemon">#001</string>
     <string name="bug">Bug</string>
     <string name="password">Password :</string>
+    <string name="tipo">Tipo</string>
+    <string name="peso">Peso</string>
+    <string name="altura">Altura</string>
 </resources>

@@ -13,9 +13,12 @@ import com.example.listpoke.adapter.RecyclerAdapterMain
 import com.example.listpoke.api.PokemonWebClient
 import com.example.listpoke.database.AppDatabase
 import com.example.listpoke.database.PokemonEntity
+import com.example.listpoke.databinding.ActivityMainBinding
 import com.example.listpoke.repository.PokemonRepository
 import com.example.listpoke.repository.Resource
 import com.example.listpoke.util.POKEMON_CHAVE
+import com.example.listpoke.viewModel.PokemonDetailsActivityViewModel
+import com.example.listpoke.viewModel.PokemonFavoriteListActivityViewModelFactory
 import com.example.listpoke.viewModel.PokemonListActivityViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -26,6 +29,10 @@ const val LOAD_ERROR = "Erro para carregar lista"
 
 class PokemonListActivity : AppCompatActivity() {
 
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
     private val adapter by lazy {
         RecyclerAdapterMain(context = this)
     }
@@ -34,7 +41,7 @@ class PokemonListActivity : AppCompatActivity() {
     }
     private val viewModel by lazy {
         val repository = PokemonRepository(AppDatabase.getInstance(this).pokemonDAO)
-        val factory = PokemonListActivityViewModelFactory1 (repository)
+        val factory = PokemonFavoriteListActivityViewModelFactory (repository)
 
         ViewModelProvider(this, factory)
             .get(PokemonListActivityViewModel::class.java)
@@ -43,7 +50,7 @@ class PokemonListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         startConfiguration()
 
         Picasso.setSingletonInstance(
@@ -59,11 +66,10 @@ class PokemonListActivity : AppCompatActivity() {
         menuClickListener()
     }
 
-    val materialAppBar: Any?= null
 
     private fun menuClickListener() {
-        materialAppBar.setOnMenuClickListener {
-            when (it.itemId) {
+       binding.materialAppBar.setNavigationOnClickListener {
+            when (it.id) {
                 R.id.favorite_list -> {
                     val intent = Intent(this, PokemonFavoriteListActivity::class.java)
                     startActivity(intent)
@@ -81,7 +87,7 @@ class PokemonListActivity : AppCompatActivity() {
     }
 
     private fun searchEngine() {
-        val menuItem = materialAppBar.menu.findItem(R.id.search_menu)
+        val menuItem = binding.materialAppBar.menu.findItem(R.id.search_menu)
         val searchView = menuItem.actionView as SearchView
         searchView.queryHint = "Pesquisar Pokemon"
 
@@ -119,7 +125,7 @@ class PokemonListActivity : AppCompatActivity() {
     }
 
     private fun endlessScroll() {
-        recycleView_main.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recycleViewMain.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val lastItem = layoutManager.findLastCompletelyVisibleItemPosition()
@@ -140,14 +146,14 @@ class PokemonListActivity : AppCompatActivity() {
                     adapter.add(pokemon)
                 }
                 resource?.error?.let {
-                    Snackbar.make(recycleView_main, LOAD_ERROR, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.recycleViewMain, LOAD_ERROR, Snackbar.LENGTH_LONG).show()
                 }
             })
     }
 
     private fun recycleViewConfigurations() {
-        recycleView_main.layoutManager = layoutManager
-        recycleView_main.adapter = adapter
+        binding.recycleViewMain.layoutManager = layoutManager
+        binding.recycleViewMain.adapter = adapter
         adapter.onItemClicked = ::openPokemonDetails
     }
 
@@ -167,12 +173,10 @@ class PokemonListActivity : AppCompatActivity() {
         if (!pokemonList.data.isNullOrEmpty()) {
             adapter.update(data = pokemonList.data)
         } else if (!pokemonList.error.isNullOrEmpty()) {
-            Snackbar.make(recycleView_main, pokemonList.error, Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.recycleViewMain, pokemonList.error, Snackbar.LENGTH_LONG).show()
         } else {
-            Snackbar.make(recycleView_main, LOAD_ERROR, Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.recycleViewMain, LOAD_ERROR, Snackbar.LENGTH_LONG).show()
         }
     }
-
-
 }
 

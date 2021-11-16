@@ -2,6 +2,7 @@ package com.example.listpoke.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -9,12 +10,17 @@ import com.example.listpoke.R
 import com.example.listpoke.adapter.RecyclerAdapterMain
 import com.example.listpoke.database.AppDatabase
 import com.example.listpoke.database.PokemonEntity
+import com.example.listpoke.databinding.ActivityPokemonFavoriteListBinding
 import com.example.listpoke.repository.PokemonRepository
 import com.example.listpoke.util.POKEMON_CHAVE
 import com.example.listpoke.viewModel.PokemonFavoriteListActivityViewModel
 import com.example.listpoke.viewModel.PokemonFavoriteListActivityViewModelFactory
 
 class PokemonFavoriteListActivity : AppCompatActivity() {
+
+    private val binding by lazy {
+        ActivityPokemonFavoriteListBinding.inflate(layoutInflater)
+    }
 
     private val adapter by lazy {
         RecyclerAdapterMain(context = this)
@@ -32,12 +38,12 @@ class PokemonFavoriteListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pokemon_favorite_list)
+        setContentView(binding.root)
         startConfig()
         loadFavorites()
 
 
-        materialAppBar.setNavigationOnClickListener {
+        binding.materialAppBar.setNavigationOnClickListener {
             finish()
         }
     }
@@ -48,8 +54,8 @@ class PokemonFavoriteListActivity : AppCompatActivity() {
     }
 
     private fun startConfig() {
-        recycleView_main.layoutManager = gridLayoutManager
-        recycleView_main.adapter = adapter
+        binding.recycleViewMain.layoutManager = gridLayoutManager
+        binding.recycleViewMain.adapter = adapter
         adapter.onItemClicked = ::openPokemonDetails
     }
 

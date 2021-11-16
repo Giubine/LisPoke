@@ -4,13 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/drawable/background_appbar.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/drawable/background_pokemon_type.xml" value="0.11666666666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/activity_cadastro.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/activity_login.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/activity_main.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/activity_pokemon_details.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/activity_pokemon_details.xml" value="0.4" />
         <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/activity_pokemon_favorite_list.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/activity_splash_screen.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/card_pokemon.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/activity_splash_screen.xml" value="0.264" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/card_pokemon.xml" value="0.4" />
         <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/layout/fragment_second.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/menu/main.xml" value="0.17962962962962964" />
         <entry key="..\:/Users/user/AndroidStudioProjects/ListPoke/app/src/main/res/menu/pokemon_details.xml" value="0.17962962962962964" />

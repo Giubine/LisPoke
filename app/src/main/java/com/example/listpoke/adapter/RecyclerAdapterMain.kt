@@ -1,5 +1,6 @@
 package com.example.listpoke.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listpoke.R
 import com.example.listpoke.database.PokemonEntity
+import com.example.listpoke.databinding.CardPokemonBinding
 import com.example.listpoke.util.changeTypeColor
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -22,8 +24,7 @@ class RecyclerAdapterMain(
     private val fullPokemonList = mutableListOf<PokemonEntity>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val createdView = LayoutInflater.from(context)
-            .inflate(R.layout.card_pokemon, parent, false)
+        val createdView = CardPokemonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(createdView)
     }
 
@@ -70,6 +71,7 @@ class RecyclerAdapterMain(
             return results
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             pokemonsList.clear()
             pokemonsList.addAll(results?.values as List<PokemonEntity>)
@@ -86,8 +88,8 @@ class RecyclerAdapterMain(
         }
     }
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(val binding:CardPokemonBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         private lateinit var pokemon: PokemonEntity
 
         init {
@@ -105,17 +107,17 @@ class RecyclerAdapterMain(
             when {
                 pokemon.id < 10 -> {
                     "#00${pokemon.id}".also {
-                        itemView.
+                        itemView
                     }
                 }
                 pokemon.id < 100 -> {
-                    "#0${pokemon.id}".also { itemView.txtPokemonNumber.text = it }
+                    "#0${pokemon.id}".also { binding.txtPokemonNumber.text =it }
                 }
                 else -> {
-                    "#${pokemon.id}".also { itemView.numero_pokemon.text = it }
+                    "#${pokemon.id}".also { binding.txtPokemonNumber.text = it }
                 }
             }
-            itemView.nome_pokemon.text = pokemon.name.replaceFirstChar {
+            binding.txtPokemonName.text  = pokemon.name.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.getDefault()
                 ) else it.toString()
@@ -123,29 +125,29 @@ class RecyclerAdapterMain(
             Picasso.get()
                 .load(pokemon.image)
                 .error(R.drawable.who_is_the_pokemon)
-                .into(itemView.imgCall)
+                .into(binding.imgCall)
 
             val typeName = pokemon.type1
-            itemView.poke_type_1.text = typeName.replaceFirstChar {
+            binding.txtPokemonName.text = typeName.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.getDefault()
                 ) else it.toString()
             }
-            val unwrappedDrawable = itemView.cvPokemon.background
+            val unwrappedDrawable = binding.cvPokemon.background
             val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable)
             changeTypeColor(typeName, wrappedDrawable)
 
             if (pokemon.type2 != null) {
-                itemView.poke_type_2.visibility = View.VISIBLE
+                binding.pokeType1.visibility = View.VISIBLE
                 val typeName2 = pokemon.type2
-                itemView.poke_type_2.text = typeName2.replaceFirstChar {
+                binding.pokeType2.text = typeName2.replaceFirstChar {
                     if (it.isLowerCase()) it.titlecase(
                         Locale.getDefault()
                     ) else it.toString()
                 }
 
             } else {
-                itemView.poke_type_2.visibility = View.GONE
+                binding.pokeType2.visibility = View.GONE
             }
         }
     }
